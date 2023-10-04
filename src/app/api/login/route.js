@@ -6,8 +6,12 @@ import {QueryDB} from "@/helper/db"
 
 
 export async function POST(request) {
-    const { serialNo } = await request.json();
+    
     try {
+        const { serialNo } = await request.json();
+        if(!serialNo){
+            return getresponseMessage("Please provide login credential",401,false)
+        }
         let q = `select  * from user_details where serialNo = '${serialNo}' and status = "ACTIVE";`
         const user = await QueryDB(q);
      
@@ -30,7 +34,7 @@ export async function POST(request) {
         }, process.env.JWT_KEY);
 
          // add token into cookies
-         console.log(token," iyhd")
+    
         const response = NextResponse.json({
             message: "Login Success",
             success: true,
